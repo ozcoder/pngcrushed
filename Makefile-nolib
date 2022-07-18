@@ -1,4 +1,5 @@
-# Sample makefile for pngcrush using gcc and GNU make.
+# Sample makefile for pngcrushed using gcc and GNU make.
+# Modified by ozcoder 2022
 # Glenn Randers-Pehrson
 # Last modified:  3 October 2016
 #
@@ -11,11 +12,13 @@
 # macros --------------------------------------------------------------------
 
 # uncomment these 2 lines only if you are using an external copy of libpng:
-PNGINC = /usr/local/include
-PNGLIB = /usr/local/lib
+PNGINC = /usr/include
+PNGLIB = /usr/lib
 # uncomment these 2 lines only if you are using an external copy of zlib:
-ZINC = /usr/local/include
-ZLIB = /usr/local/lib
+ZINC = /usr/include
+ZLIB = /usr/lib
+
+ZHDR = ${ZINC}/zlib.h ${PNGINC}/png.h
 
 CC = gcc
 LD = $(CC)
@@ -29,13 +32,13 @@ LDFLAGS =
 O = .o
 E =
 
-PNGCRUSH  = pngcrush
+PNGCRUSHED  = pngcrushed
 
 LIBS = -L$(PNGLIB) -L$(ZLIB) -lpng -lz -lm
 
-OBJS  = pngcrush$(O)
+OBJS  = pngcrushed$(O)
 
-EXES = $(PNGCRUSH)$(E)
+EXES = $(PNGCRUSHED)$(E)
 
 # implicit make rules -------------------------------------------------------
 
@@ -47,10 +50,10 @@ EXES = $(PNGCRUSH)$(E)
 
 all:  $(EXES)
 
-pngcrush$(O): pngcrush.c cexcept.h
+pngcrushed$(O): pngcrushed.c cexcept.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
-$(PNGCRUSH)$(E): $(OBJS)
+$(PNGCRUSHED)$(E): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 # maintenance ---------------------------------------------------------------
@@ -60,6 +63,6 @@ clean:
 
 install:
 	mkdir -p $(DESTDIR)/usr/bin/
-	cp $(PNGCRUSH)$(E) $(DESTDIR)/usr/bin/
-	chmod 0755 $(DESTDIR)/usr/bin/$(PNGCRUSH)$(E)
+	cp $(PNGCRUSHED)$(E) $(DESTDIR)/usr/bin/
+	chmod 0755 $(DESTDIR)/usr/bin/$(PNGCRUSHED)$(E)
 

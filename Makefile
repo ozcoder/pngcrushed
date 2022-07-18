@@ -1,4 +1,5 @@
-# Sample makefile for pngcrush using gcc and GNU make.
+# Sample makefile for pngcrushed using gcc and GNU make.
+# Modified by ozcoder 2022
 # Revised to build with INTEL_SSE2 and ARM_NEON support
 # Glenn Randers-Pehrson
 # Last modified:  3 October 2016
@@ -19,7 +20,9 @@ RM = rm -f
 # On some platforms you might need to comment this out:
 CFLAGS += -std=c90 
 
-CFLAGS += -O3 -funroll-loops -fomit-frame-pointer
+CFLAGS += -O3 -funroll-loops -fomit-frame-pointer -Wall
+
+CFLAGS += -DPNG_SET_OPTION_SUPPORTED
 
 # use unified libpng:
 CPPFLAGS = -DLIBPNG_UNIFIED
@@ -41,7 +44,7 @@ LDFLAGS =
 O = .o
 E =
 
-PNGCRUSH  = pngcrush
+PNGCRUSHED  = pngcrushed
 
 LIBS += -lm
 
@@ -52,22 +55,22 @@ ZOBJS  = adler32$(O) compress$(O) crc32$(O) deflate$(O) \
 	 trees$(O) uncompr$(O) zutil$(O)
 
 # Enable ARM_NEON support
-CPPFLAGS += -DPNGCRUSH_USE_ARM_NEON
+#CPPFLAGS += -DPNGCRUSH_USE_ARM_NEON
 
 # Enable MIPS-NSA support
-CPPFLAGS += -DPNGCRUSH_USE_MPS_MSA
+#CPPFLAGS += -DPNGCRUSH_USE_MPS_MSA
 
 # Enable INTEL SSE support
 CPPFLAGS += -DPNGCRUSH_USE_INTEL_SSE -DPNG_INTEL_SSE
 
 # unified libpng with separate zlib *.o
-OBJS  = pngcrush$(O) $(ZOBJS)
+OBJS  = pngcrushed$(O) $(ZOBJS)
 
-EXES = $(PNGCRUSH)$(E)
+EXES = $(PNGCRUSHED)$(E)
 
 # implicit make rules -------------------------------------------------------
 
-.c$(O): png.h pngconf.h pngcrush.h cexcept.h pngpriv.h pnglibconf.h $(ZHDR)
+.c$(O): png.h pngconf.h pngcrushed.h cexcept.h pngpriv.h pnglibconf.h $(ZHDR)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
 
@@ -78,11 +81,11 @@ all:  $(EXES)
 deflate$(O): deflate.c
 	$(CC) -c -DTOO_FAR=32767 $(CPPFLAGS) $(CFLAGS) $<
 
-pngcrush$(O): pngcrush.c png.h pngconf.h pngcrush.h pnglibconf.h cexcept.h \
+pngcrushed$(O): pngcrushed.c png.h pngconf.h pngcrushed.h pnglibconf.h cexcept.h \
 	$(ZHDR)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
-$(PNGCRUSH)$(E): $(OBJS)
+$(PNGCRUSHED)$(E): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 # maintenance ---------------------------------------------------------------

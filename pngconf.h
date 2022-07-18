@@ -18,13 +18,13 @@
  *
  * This file has been modified, by Glenn Randers-Pehrson, from the original
  * libpng distribution by adding a line reading
- * #include "pngcrush.h"
+ * include "pngcrush.h"
  */
 
 #ifndef PNGCONF_H
 #define PNGCONF_H
 
-#include "pngcrush.h"
+#include "pngcrushed.h"
 
 #ifndef PNG_BUILDING_SYMBOL_TABLE /* else includes may cause problems */
 

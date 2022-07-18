@@ -6,7 +6,7 @@
  * Portions Copyright (C) 2005 Greg Roelofs
  */
 
-#define PNGCRUSHED_VERSION "0.0.1"
+#define PNGCRUSHED_VERSION "0.0.2"
 #define PNGCRUSH_VERSION "1.8.14"
 
 #undef BLOCKY_DEINTERLACE
@@ -57,7 +57,7 @@
  *
  * DISCLAIMERS:
  *
- * The pngcrush computer program is supplied "AS IS".  The Author disclaims all
+ * The pngcrushed computer program is supplied "AS IS".  The Author disclaims all
  * warranties, expressed or implied, including, without limitation, the
  * warranties of merchantability and of fitness for any purpose.  The
  * Author assumes no liability for direct, indirect, incidental, special,
@@ -73,16 +73,16 @@
  * EXPORT CONTROL
  *
  * I am not a lawyer, but I believe that the Export Control Classification
- * Number (ECCN) for pngcrush is EAR99, which means not subject to export
+ * Number (ECCN) for pngcrushed is EAR99, which means not subject to export
  * controls or International Traffic in Arms Regulations (ITAR) because it
- * and cexcept.c, libpng, and zlib, which may be bundled with pngcrush, are
+ * and cexcept.c, libpng, and zlib, which may be bundled with pngcrushed, are
  * all open source, publicly available software, that do not contain any
  * encryption software. See the EAR, paragraphs 734.3(b)(3) and 734.7(b).
  *
  * TRADEMARK:
  *
- * The name "pngcrush" has not been registered by the Copyright owner
- * as a trademark in any jurisdiction.  However, because pngcrush has
+ * The name "pngcrushed" or "pngcrush" has not been registered by the Copyright
+ * owner as a trademark in any jurisdiction.  However, because pngcrush has
  * been distributed and maintained world-wide, continually since 1998,
  * the Copyright owner claims "common-law trademark protection" in any
  * jurisdiction where common-law trademark is recognized.
@@ -198,7 +198,7 @@ static int copy_idat = 0; /* = 1 to simply copy the IDAT chunk data */
 
 /* TIMER function
    ===== ====================== 
-   set in pngcrush.c:
+   set in pngcrushed.c:
      0   total time
      1   total decode
      2   total encode
@@ -890,7 +890,7 @@ static PNG_CONST char *outname = "pngout" DOT "png";
 #ifdef PNGCRUSH_LOCO
 static PNG_CONST char *mngname = "mngout" DOT "mng";
 #endif
-static PNG_CONST char *directory_name = "pngcrush" DOT "bak";
+static PNG_CONST char *directory_name = "pngcrushed" DOT "bak";
 static PNG_CONST char *extension = "_C" DOT "png";
 
 static png_uint_32 width, height;
@@ -927,7 +927,7 @@ png_alloc_size_t max_bytes;
         *    .png -> .ppng is OK, do premultiplication.
         *    .ppng -> .ppng is OK, simply copy data.
         *    .ppng -> .ppng is not OK because colors are irretrievably lost.
-        *    .ppng -> no output (pngcrush -n) is OK.
+        *    .ppng -> no output (pngcrushed -n) is OK.
         *
         * To do: Implement this stuff!
         */
@@ -2512,14 +2512,14 @@ int main(int argc, char *argv[])
 
 #define pngcrush_check_long \
     {if (errno || endptr == argv[i] || *endptr != '\0') \
-      { fprintf(STDERR, "pngcrush: malformed or missing argument\n"); \
+      { fprintf(STDERR, "pngcrushed: malformed or missing argument\n"); \
         exit(1); \
       } \
     }
 
 #define BUMP_I \
         { i++; \
-        if(i >= argc) {fprintf(STDERR,"pngcrush: insufficient parameters\n");\
+        if(i >= argc) {fprintf(STDERR,"pngcrushed: insufficient parameters\n");\
         exit(1);} }
 
     names = 1;
@@ -3237,14 +3237,15 @@ int main(int argc, char *argv[])
 
         else if (!strncmp(argv[i], "-version", 8))
         {
-            fprintf(STDERR, " pngcrush ");
+            fprintf(STDERR, " pngcrushed ");
+            fprintf(STDERR, PNGCRUSHED_VERSION);
+            fprintf(STDERR, " based on pngcrush ");
             fprintf(STDERR, PNGCRUSH_VERSION);
             fprintf(STDERR, ", uses libpng ");
             fprintf(STDERR, PNG_LIBPNG_VER_STRING);
             fprintf(STDERR, " and zlib ");
             fprintf(STDERR, ZLIB_VERSION);
-            fprintf(STDERR, "\n Check http://pmt.sf.net/\n");
-            fprintf(STDERR, " for the most recent version.\n");
+            fprintf(STDERR, "\n");
             verbose = 0;
             exit(0);
         }
@@ -3437,7 +3438,7 @@ int main(int argc, char *argv[])
 #endif
                 {
                     fprintf(STDERR,
-                      "pngcrush: could not create directory %s\n",
+                      "pngcrushed: could not create directory %s\n",
                       directory_name);
                     exit(1);
                 }
@@ -3447,7 +3448,7 @@ int main(int argc, char *argv[])
             if (outlen >= STR_BUF_SIZE-1)
             {
                 fprintf(STDERR,
-                  "pngcrush: directory %s is too long for buffer\n",
+                  "pngcrushed: directory %s is too long for buffer\n",
                   directory_name);
                 exit(1);
             }
@@ -3464,7 +3465,7 @@ int main(int argc, char *argv[])
             if (inlen >= STR_BUF_SIZE)
             {
                 fprintf(STDERR,
-                   "pngcrush: filename %s is too long for buffer\n", inname);
+                   "pngcrushed: filename %s is too long for buffer\n", inname);
                 exit(1);
             }
             strcpy(in_string, inname);
@@ -3492,7 +3493,7 @@ int main(int argc, char *argv[])
             if (outlen + (inlen - (op - in_string)) >= STR_BUF_SIZE)
             {
                 fprintf(STDERR,
-                   "pngcrush: full path is too long for buffer\n");
+                   "pngcrushed: full path is too long for buffer\n");
                 exit(1);
             }
             strcpy(out_string+outlen, op);
@@ -3604,12 +3605,12 @@ int main(int argc, char *argv[])
                     (png_error_ptr) pngcrush_cexcept_error,
                     (png_error_ptr) pngcrush_warning);
                if (mng_ptr == NULL)
-                  fprintf(STDERR, "pngcrush could not create mng_ptr");
+                  fprintf(STDERR, "pngcrushed could not create mng_ptr");
 
                if ((mng_out = FOPEN(mngname, "wb")) == NULL)
                {
                   fprintf(STDERR,
-                      "pngcrush: could not open output file %s\n",
+                      "pngcrushed: could not open output file %s\n",
                       mngname);
                   FCLOSE(fpin);
                   exit(1);
@@ -3866,8 +3867,8 @@ int main(int argc, char *argv[])
         if (methods_enabled > 1)
            last_method++;
 
-        P1("   pngcrush: methods     = %d\n",methods_enabled);
-        P1("   pngcrush: last_method = %d\n",last_method);
+        P1("   pngcrushed: methods     = %d\n",methods_enabled);
+        P1("   pngcrushed: last_method = %d\n",last_method);
         
         if (methods_enabled == 1 && last_method == 176)
            copy_idat = 1;
@@ -3899,7 +3900,7 @@ int main(int argc, char *argv[])
                last_trial = 1;
 
             if (verbose > 1)
-            fprintf(STDERR, "pngcrush: trial = %d\n",trial);
+            fprintf(STDERR, "pngcrushed: trial = %d\n",trial);
 
             pngcrush_write_byte_count=0;
 #ifdef PNGCRUSHED_H
@@ -3973,7 +3974,7 @@ int main(int argc, char *argv[])
                     if ((fpout = FOPEN(outname, "wb")) == NULL)
                     {
                         fprintf(STDERR,
-                           "pngcrush: could not open output file %s\n",
+                           "pngcrushed: could not open output file %s\n",
                            outname);
                         FCLOSE(fpin);
                         exit(1);
@@ -4103,7 +4104,7 @@ int main(int argc, char *argv[])
                     (stat_in.st_dev == stat_out.st_dev))
                 {
                     fprintf(STDERR,
-                            "\n   pngcrush: cannot overwrite input file %s\n",
+                            "\n   pngcrushed: cannot overwrite input file %s\n",
                             outname);
                     P1("   st_ino=%d, st_size=%d\n\n",
                        (int) stat_in.st_ino, (int) stat_in.st_size);
@@ -4114,7 +4115,7 @@ int main(int argc, char *argv[])
                 if ((fpout = FOPEN(outname, "wb")) == NULL)
                 {
                     fprintf(STDERR,
-                            "pngcrush: could not open output file %s\n",
+                            "pngcrushed: could not open output file %s\n",
                             outname);
                     FCLOSE(fpin);
                     exit(1);
@@ -4146,7 +4147,7 @@ int main(int argc, char *argv[])
                      (png_error_ptr) pngcrush_cexcept_error,
                      (png_error_ptr) pngcrush_warning);
                 if (read_ptr == NULL)
-                    Throw "pngcrush could not create read_ptr";
+                    Throw "pngcrushed could not create read_ptr";
 
 #ifdef PNG_BENIGN_ERRORS_SUPPORTED
 # if PNGCRUSH_LIBPNG_VER >= 10400
@@ -4229,29 +4230,29 @@ int main(int argc, char *argv[])
                          (png_error_ptr) pngcrush_cexcept_error,
                          (png_error_ptr) NULL);
                     if (write_ptr == NULL)
-                        Throw "pngcrush could not create write_ptr";
+                        Throw "pngcrushed could not create write_ptr";
 
                 }
                 P1("Allocating read_info, write_info, end_info structures\n");
                 read_info_ptr = png_create_info_struct(read_ptr);
 
                 if (read_info_ptr == NULL)
-                    Throw "pngcrush could not create read_info_ptr";
+                    Throw "pngcrushed could not create read_info_ptr";
 
                 end_info_ptr = png_create_info_struct(read_ptr);
                 if (end_info_ptr == NULL)
-                    Throw "pngcrush could not create end_info_ptr";
+                    Throw "pngcrushed could not create end_info_ptr";
 
                 if (nosave == 0)
                 {
                     write_info_ptr = png_create_info_struct(write_ptr);
                     if (write_info_ptr == NULL)
-                        Throw "pngcrush could not create write_info_ptr";
+                        Throw "pngcrushed could not create write_info_ptr";
 
                     write_end_info_ptr = png_create_info_struct(write_ptr);
                     if (write_end_info_ptr == NULL)
                         Throw
-                            "pngcrush could not create write_end_info_ptr";
+                            "pngcrushed could not create write_end_info_ptr";
                 }
 
                 P2("structures created.\n");
@@ -4273,6 +4274,7 @@ int main(int argc, char *argv[])
                 pngcrush_pause();
 
 #ifdef PNG_CRC_QUIET_USE
+# ifdef PNG_SET_OPTION_SUPPORTED
                 if (check_crc == 0)
                 {
                     /* We don't need to check IDAT CRC's and ADLER32 because
@@ -4284,6 +4286,7 @@ int main(int argc, char *argv[])
                     png_set_crc_action(read_ptr, PNG_CRC_QUIET_USE,
                                        PNG_CRC_QUIET_USE);
                 }
+# endif
 #endif
 
 #ifndef PNGCRUSH_CHECK_ADLER32
@@ -4819,7 +4822,7 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
                        if (save_apng_chunks == 0)
                        {
                           if (verbose > 0) fprintf(STDERR,
-                          "   pngcrush will only save APNG chunks in an\n");
+                          "   pngcrushed will only save APNG chunks in an\n");
                           if (verbose > 0) fprintf(STDERR,
                           "   output file with the \".apng\" extension\n");
                        }
@@ -5760,13 +5763,13 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
 #ifdef PNGCRUSHED_H
                 png_read_transform_info(read_ptr, read_info_ptr);
 #else
-                /* Some pngcrush capabilities are lacking when the system
-                 * libpng is used instead of the one bundled with pngcrush
+                /* Some pngcrushed capabilities are lacking when the system
+                 * libpng is used instead of the one bundled with pngcrushed
                  *
                  * To do: list those capabilities here
                  */
 
-                /* pngcrush fails to read interlaced PNGs properly
+                /* pngcrushed fails to read interlaced PNGs properly
                  * when png_read_update_info() is called here.
                  */
 
@@ -6538,7 +6541,7 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
                 else
                     fprintf(stderr, "While reading %s:\n", inname);
                 fprintf(stderr,
-                  "  pngcrush caught libpng error:\n   %s\n\n", msg);
+                  "  pngcrushed caught libpng error:\n   %s\n\n", msg);
                 if (row_buf)
                 {
                     png_free(read_ptr, row_buf);
@@ -6672,7 +6675,7 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
                 if (best == 0)
                 {
                   fprintf(STDERR,
-                  "   Best pngcrush method = 0 (settings undetermined)\n");
+                  "   Best pngcrushed method = 0 (settings undetermined)\n");
                 }
 
 #if 0 /* disabled */
@@ -6682,7 +6685,7 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
 #endif
                 {
                 fprintf(STDERR,
-                  "   Best pngcrush method        = %3d "
+                  "   Best pngcrushed method        = %3d "
                   "(ws %d fm %d zl %d zs %d) =%10lu\n",
                   best, compression_window, fm[best], lv[best], zs[best],
                   (unsigned long)idat_length[best]);
@@ -6865,7 +6868,7 @@ defined(PNG_READ_STRIP_16_TO_8_SUPPORTED)
 png_uint_32 measure_idats(FILE * fp_in)
 {
     /* Copyright (C) 1999-2002, 2006-2015 Glenn Randers-Pehrson
-       (glennrp at users.sf.net).  See notice in pngcrush.c for conditions of
+       (glennrp at users.sf.net).  See notice in pngcrushed.c for conditions of
        use and distribution */
     P2("\nmeasure_idats:\n");
     P1( "Allocating read structure\n");
@@ -6894,7 +6897,7 @@ png_uint_32 measure_idats(FILE * fp_in)
     }
     Catch(msg) {
         fprintf(STDERR, "\nWhile measuring IDATs in %s ", inname);
-        fprintf(STDERR, "pngcrush caught libpng error:\n   %s\n\n", msg);
+        fprintf(STDERR, "pngcrushed caught libpng error:\n   %s\n\n", msg);
         png_destroy_read_struct(&read_ptr, &read_info_ptr, &end_info_ptr);
         P1( "Destroyed data structs\n");
         measured_idat_length = 0;
@@ -6914,7 +6917,7 @@ png_uint_32 pngcrush_measure_idat(png_structp png_ptr)
 {
     /* Copyright (C) 1999-2002, 2006-2015 Glenn Randers-Pehrson
        (glennrp at users.sf.net)
-       See notice in pngcrush.c for conditions of use and distribution */
+       See notice in pngcrushed.c for conditions of use and distribution */
 
     /* Signature + IHDR + IEND; we'll add PLTE + IDAT lengths */
     png_uint_32 sum_idat_length = 45;
@@ -7246,7 +7249,7 @@ png_uint_32 pngcrush_measure_idat(png_structp png_ptr)
                 else
                 {
                     fprintf (STDERR,
-                    " Try \"pngcrush -fix ...\" to attempt to read it.\n");
+                    " Try \"pngcrushed -fix ...\" to attempt to read it.\n");
                 }
                 found_CgBI++;
                 nosave++;
@@ -7333,7 +7336,7 @@ png_uint_32 pngcrush_measure_idat(png_structp png_ptr)
             /* Check for bad Photoshop iCCP chunk.  Libpng will reject the
              * bad chunk because the Adler-32 bytes are missing, but we check
              * here to see if it's really the sRGB profile, and if so, set the
-             * "intent" flag and gamma so pngcrush will write an sRGB chunk
+             * "intent" flag and gamma so pngcrushed will write an sRGB chunk
              * and a gamma chunk.
              */
             if (length == 2615)
@@ -7497,7 +7500,7 @@ void print_version_info(void)
       " |    Copyright (C) 1998-2002, 2006-2017 Glenn Randers-Pehrson\n"
       " |    Portions Copyright (C) 2005 Greg Roelofs\n"
       " | This is a free, open-source program.  Permission is irrevocably\n"
-      " | granted to everyone to use this version of pngcrush without\n"
+      " | granted to everyone to use this version of pngcrushed without\n"
       " | payment of any fee.\n"
       " | Executable name is %s\n"
       " | Based on pngcrush-%s\n"
@@ -7563,7 +7566,7 @@ static const char *pngcrush_legal[] = {
     "Copyright (C) 1998-2002, 2006-2017 Glenn Randers-Pehrson",
     "Portions Copyright (C) 2005 Greg Roelofs",
     "",
-    "DISCLAIMER: The pngcrush computer program is supplied \"AS IS\".",
+    "DISCLAIMER: The pngcrushed computer program is supplied \"AS IS\".",
     "The Author disclaims all warranties, expressed or implied, including,",
     "without limitation, the warranties of merchantability and of fitness",
     "for  any purpose.  The Author assumes no liability for direct, indirect,",
@@ -7652,9 +7655,9 @@ struct options_help pngcrush_options[] = {
     {2, "               If a directory name is given, then the output"},
     {2, "               files are placed in it, with the same filenames as"},
     {2, "               those of the original files. For example,"},
-    {2, "               you would type 'pngcrush -directory CRUSHED/ *.png'"},
+    {2, "               you would type 'pngcrushed -directory CRUSHED/ *.png'"},
     {2, "               to get *.png => CRUSHED/*.png.  The trailing slash is"},
-    {2, "               optional, but if pngcrush appends the wrong kind of"},
+    {2, "               optional, but if pngcrushed appends the wrong kind of"},
     {2, "               slash or backslash, please include the correct one"},
     {2, "               at the end of the directory_name, as shown."},
     {2, ""},
@@ -7722,7 +7725,7 @@ struct options_help pngcrush_options[] = {
 
     {0, "         -keep chunk_name"},
     {2, ""},
-    {2, "               keep named chunk even when pngcrush makes"},
+    {2, "               keep named chunk even when pngcrushed makes"},
     {2, "               changes to the PNG datastream that cause it"},
     {2, "               to become invalid.  Currently only dSIG is"},
     {2, "               recognized as a chunk to be kept."},
@@ -7752,8 +7755,8 @@ struct options_help pngcrush_options[] = {
 
     {0, "            -m method [1 through " STRNGIFY(MAX_METHODS) "]"},
     {2, ""},
-    {2, "               pngcrush method to try.  Can be repeated as in"},
-    {2, "               '-m 1 -m 4 -m 7'. This can be useful if pngcrush"},
+    {2, "               pngcrushed method to try.  Can be repeated as in"},
+    {2, "               '-m 1 -m 4 -m 7'. This can be useful if pngcrushed"},
     {2, "               runs out of memory when it tries methods 2, 3, 5,"},
     {2, "               6, 8, 9, or 10 which use filtering and are memory-"},
     {2, "               intensive.  Methods 1, 4, and 7 use no filtering;"},
@@ -7830,7 +7833,7 @@ struct options_help pngcrush_options[] = {
     {2, "               filesystem."},
     {2, ""},
     {2, "               CAUTION: If you are running multiple instances"},
-    {2, "               of pngcrush in parallel, you must specify a"},
+    {2, "               of pngcrushed in parallel, you must specify a"},
     {2, "               different temporary filename for each instance,"},
     {2, "               to avoid collisions."},
     {2, ""},
@@ -7847,7 +7850,7 @@ struct options_help pngcrush_options[] = {
     {2, "               bit depth from 16 to 8.  Reduces all-gray RGB"},
     {2, "               or RGBA image to gray or gray-alpha.  Reduces"},
     {2, "               all-opaque RGBA or GA image to RGB or grayscale."},
-    {2, "               Since pngcrush version 1.8.0, -reduce is on by"},
+    {2, "               Since pngcrushed version 1.8.0, -reduce is on by"},
     {2, "               default, and you can disable it with -noreduce."},
     {2, ""},
 
@@ -7904,7 +7907,7 @@ struct options_help pngcrush_options[] = {
     {2, ""},
     {2, "               Save otherwise unknown ancillary chunks that would"},
     {2, "               be considered copy-unsafe.  This option makes"},
-    {2, "               chunks 'known' to pngcrush, so they can be copied."},
+    {2, "               chunks 'known' to pngcrushed, so they can be copied."},
     {2, "               It also causes the dSIG chunk to be saved, even when"},
     {2, "               it becomes invalid due to datastream changes."},
     {2, "               This option does not affect APNG chunks. These"},
@@ -7939,7 +7942,7 @@ struct options_help pngcrush_options[] = {
     {2, ""},
     {2, "               tEXt chunk to insert.  keyword < 80 chars,"},
     {2, "               text < 2048 chars. For now, you can add no more than"},
-    {2, "               ten tEXt, iTXt, or zTXt chunks per pngcrush run."},
+    {2, "               ten tEXt, iTXt, or zTXt chunks per pngcrushed run."},
     {2, ""},
 
 #ifdef PNG_tRNS_SUPPORTED
@@ -7964,7 +7967,7 @@ struct options_help pngcrush_options[] = {
     {2, "               Repeat the option (use \"-v -v\") for even more."},
     {2, ""},
 
-    {0, "      -version (display the pngcrush version)"},
+    {0, "      -version (display the pngcrushed version)"},
     {2, ""},
     {2, "               Look for the most recent version of pngcrush at"},
     {2, "               http://pmt.sf.net"},
@@ -8044,8 +8047,8 @@ void print_usage(int retval)
         fprintf(STDERR,
           "\n"
           "options (Note: any option can be spelled out for clarity, e.g.,\n"
-          "          \"pngcrush -dir New -method 7 -remove bkgd *.png\"\n"
-          "          is the same as \"pngcrush -d New/ -m 7 -rem bkgd *.png\"):"
+          "          \"pngcrushed -dir New -method 7 -remove bkgd *.png\"\n"
+          "          is the same as \"pngcrushed -d New/ -m 7 -rem bkgd *.png\"):"
           "\n\n");
     }
     else

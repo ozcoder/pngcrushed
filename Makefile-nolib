@@ -26,7 +26,8 @@ RM = rm -f
 
 CPPFLAGS = ${OPTIONS} -I$(PNGINC)
 
-CFLAGS = -g -O3 -fomit-frame-pointer -Wall
+CFLAGS += -std=c11
+CFLAGS += -O3 -fomit-frame-pointer -Wall
 # [note that -Wall is a gcc-specific compilation flag ("all warnings on")]
 LDFLAGS =
 O = .o

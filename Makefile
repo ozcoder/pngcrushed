@@ -18,7 +18,7 @@ LD = $(CC)
 RM = rm -f
 
 # On some platforms you might need to comment this out:
-CFLAGS += -std=c90 
+CFLAGS += -std=c11
 
 CFLAGS += -O3 -funroll-loops -fomit-frame-pointer -Wall
 

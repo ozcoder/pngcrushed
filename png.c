@@ -411,42 +411,6 @@ png_destroy_info_struct(png_const_structrp png_ptr, png_infopp info_ptr_ptr)
    }
 }
 
-/* Initialize the info structure.  This is now an internal function (0.89)
- * and applications using it are urged to use png_create_info_struct()
- * instead.  Use deprecated in 1.6.0, internal use removed (used internally it
- * is just a memset).
- *
- * NOTE: it is almost inconceivable that this API is used because it bypasses
- * the user-memory mechanism and the user error handling/warning mechanisms in
- * those cases where it does anything other than a memset.
- */
-PNG_FUNCTION(void,PNGAPI
-png_info_init_3,(png_infopp ptr_ptr, png_size_t png_info_struct_size),
-    PNG_DEPRECATED)
-{
-   png_inforp info_ptr = *ptr_ptr;
-
-   png_debug(1, "in png_info_init_3");
-
-   if (info_ptr == NULL)
-      return;
-
-   if ((sizeof (png_info)) > png_info_struct_size)
-   {
-      *ptr_ptr = NULL;
-      /* The following line is why this API should not be used: */
-      free(info_ptr);
-      info_ptr = png_voidcast(png_inforp, png_malloc_base(NULL,
-          (sizeof *info_ptr)));
-      if (info_ptr == NULL)
-         return;
-      *ptr_ptr = info_ptr;
-   }
-
-   /* Set everything to 0 */
-   memset(info_ptr, 0, (sizeof *info_ptr));
-}
-
 /* The following API is not called internally */
 void PNGAPI
 png_data_freer(png_const_structrp png_ptr, png_inforp info_ptr,

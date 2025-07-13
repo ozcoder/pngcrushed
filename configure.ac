@@ -11,19 +11,37 @@ AC_PROG_RANLIB
 dnl Check for standard headers:
 AC_HEADER_ASSERT
 AC_HEADER_STAT
-AC_HEADER_STDC
-AC_HEADER_TIME
 
-AC_CHECK_HEADERS([alloc.h altivec.h config.h float.h fp.h kernel.h libc/dosio.h malloc.h math.h mem.h msa.h sys/utime.h time.h unix.h unixio.h utime.h])
+AC_CHECK_HEADERS([alloc.h altivec.h config.h float.h fp.h kernel.h libc/dosio.h malloc.h math.h mem.h msa.h stdarg.h sys/utime.h time.h unix.h unixio.h utime.h])
 
 AC_CHECK_FUNCS([clock_gettime memset mkdir strerror strrchr strtol utime])
 AC_FUNC_MALLOC
 AC_CHECK_TYPES([ptrdiff_t])
-# arm_neon.h
+AC_CHECK_HEADERS([arm_neon.h immintrin.h m68881.h])
 
-# immintrin.h
+dnl AS_IF([test "$ac_cv_header_immintrin_h" = "yes"], [
+dnl   CXXFLAGS_save=$CXXFLAGS
+dnl   CXXFLAGS="$CXXFLAGS"
+dnl 
+dnl   XXX_PROGRAM="
+dnl #ifdef HAVE_IMMINTRIN_H
+dnl #include <immintrin.h>
+dnl #endif
+dnl int main(void) {
+dnl     const __m128i x = _mm_setzero_si128();
+dnl     return 0;
+dnl }
+dnl "
+dnl   AC_MSG_CHECKING([whether $CXX supports immintrin])
+dnl   AC_COMPILE_IFELSE(
+dnl     [AC_LANG_SOURCE([$XXX_PROGRAM])],
+dnl     [AC_MSG_RESULT([yes])],
+dnl     [AC_MSG_RESULT([no])]
+dnl   )
+dnl 
+dnl   CXXFLAGS=$CXXFLAGS_save
+dnl ])
 
-# m68881.h
 
 LIBS=-lm
 
@@ -58,4 +76,5 @@ AS_IF([test "x$LOCAL_PNG" = "xyes"], [
 ])
 
 # Last line
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

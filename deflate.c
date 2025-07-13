@@ -213,8 +213,8 @@ local void slide_hash(s)
         m = *--p;
         *p = (Pos)(m >= wsize ? m - wsize : NIL);
     } while (--n);
-    n = wsize;
 #ifndef FASTEST
+    n = wsize;
     p = &s->prev[n];
     do {
         m = *--p;
@@ -1463,7 +1463,7 @@ local void check_match(s, start, match, length)
         z_error("invalid match");
     }
     if (z_verbose > 1) {
-        fprintf(stderr,"\\[%d,%d]", start-match, length);
+        fprintf(stderr,"\\[%u,%d]", start - match, length);
         do { putc(s->window[start++], stderr); } while (--length != 0);
     }
 }

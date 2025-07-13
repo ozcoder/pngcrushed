@@ -47,6 +47,7 @@
 aclocal.m4
 autom4te.cache
 autoscan.log
+config.guess
 config.log
 config.status
 configure.scan
@@ -54,6 +55,7 @@ depcomp
 compile
 missing
 
+pngcrushed
 
 # Kernel Module Compile Results
 *.mod*

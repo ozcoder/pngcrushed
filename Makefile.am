@@ -5,13 +5,15 @@ pngcrushed_CFLAGS = -std=c11 -O3 -funroll-loops -fomit-frame-pointer -Wall
 pngcrushed_CPPFLAGS = -DNO_GZ
 
 DEFAULT_INCLUDES =
-# -DLIBPNG_UNIFIED
 
 if LOCAL_ZLIB
 pngcrushed_SOURCES += adler32.c crc32.c compress.c deflate.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c
+else
+# Usually the default /usr/include
+pngcrushed_CPPFLAGS += `pkg-config --cflags-only-I zlib`
 endif
 if LOCAL_PNG
 pngcrushed_CPPFLAGS += -I. -DLIBPNG_UNIFIED
 else
-pngcrushed_CPPFLAGS += -I/usr/include/libpng12
+pngcrushed_CPPFLAGS += `pkg-config --cflags-only-I libpng`
 endif
